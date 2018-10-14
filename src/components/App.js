@@ -7,7 +7,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import {
+  Switch, Route, Link, withRouter,
+} from 'react-router-dom';
 import Home from './Home';
 import UnitConverter from './services/UnitConverter';
 import Development from './services/Development';
@@ -38,25 +40,25 @@ const styles = theme => ({
 function App(props) {
   const { classes } = props;
   return (
-    <Router>
-      <React.Fragment>
-        <CssBaseline />
-        <AppBar position="static" className={classes.appBar}>
-          <Toolbar>
-            <Button>
-              <Link to="/" style={{ textDecoration: 'none', display: 'inline-flex' }}>
-                <Typography variant="h4" style={{ marginRight: '0.25rem' }}>
-                  <span role="img" aria-label="logo">💭</span>
-                </Typography>
-                <Typography variant="h6" style={{ color: '#fff' }}>
+    <React.Fragment>
+      <CssBaseline />
+      <AppBar position="static" className={classes.appBar}>
+        <Toolbar>
+          <Button>
+            <Link to="/" style={{ textDecoration: 'none', display: 'inline-flex' }}>
+              <Typography variant="h4" style={{ marginRight: '0.25rem' }}>
+                <span role="img" aria-label="logo">💭</span>
+              </Typography>
+              <Typography variant="h6" style={{ color: '#fff' }}>
                 ガスくん
-                </Typography>
-              </Link>
-            </Button>
+              </Typography>
+            </Link>
+          </Button>
 
-          </Toolbar>
-        </AppBar>
-        <div className={classNames(classes.layout, classes.cardGrid)}>
+        </Toolbar>
+      </AppBar>
+      <div className={classNames(classes.layout, classes.cardGrid)}>
+        <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/unit-converter" component={UnitConverter} />
           <Route exact path="/production-calc" component={Development} />
@@ -66,10 +68,10 @@ function App(props) {
           <Route exact path="/pressureloss-calc" component={Development} />
           <Route exact path="/reducingvalve-calc" component={Development} />
           <Route exact path="/purgegas-estimation" component={Development} />
-        </div>
-        <Footer />
-      </React.Fragment>
-    </Router>
+        </Switch>
+      </div>
+      <Footer />
+    </React.Fragment>
   );
 }
 
@@ -77,4 +79,4 @@ App.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line
 };
 
-export default withStyles(styles)(App);
+export default withRouter(withStyles(styles, { withTheme: true })(App));
