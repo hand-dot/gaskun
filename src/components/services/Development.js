@@ -1,19 +1,25 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import ServiceHeader from './ServiceHeader';
 
-function Development() {
+function Development(props) {
   return (
-    <main style={{ textAlign: 'center' }}>
-      <Typography variant="headline" style={{ marginBottom: '2rem' }}>
-        ただいま開発中
-        <span role="img" aria-label="under construction">👷</span>
-      </Typography>
-      <Link to="/">
-        <Typography>
-         Topに戻る
+    <main>
+      <ServiceHeader {...props} />
+      <div style={{ margin: '2rem 0', textAlign: 'center' }}>
+        <Typography variant="headline">
+        ただいま開発中...
+          <span role="img" aria-label="under construction">👷</span>
         </Typography>
-      </Link>
+        <div style={{ marginTop: '2rem' }}>
+          <Link to="/">
+            <Typography>
+              Topに戻る
+            </Typography>
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }

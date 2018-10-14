@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import guc from 'guc';
 import FormControl from '@material-ui/core/FormControl';
@@ -8,9 +9,9 @@ import Autorenew from '@material-ui/icons/Autorenew';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import ServiceHeader from './ServiceHeader';
 
-
-const units = ['kg', 'L', 'Nm3', 'Sm3'];
+const units = [{ value: 'kg', label: 'kg' }, { value: 'L', label: 'L' }, { value: 'Nm3', label: 'Nm3(0℃)' }, { value: 'Sm3', label: 'Sm3(35℃)' }];
 const gases = ['O2', 'N2', 'Ar', 'H2', 'CO2', 'He', 'C2H2'];
 
 const styles = theme => ({
@@ -22,8 +23,8 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
   },
-  menu: {
-    width: 200,
+  mini: {
+    maxWidth: 150,
   },
 });
 
@@ -35,10 +36,10 @@ class UnitConverter extends React.Component {
 
   state = {
     gas: gases[0],
-    input: 0,
-    inputUnit: units[0],
+    input: '',
+    inputUnit: units[0].value,
     output: 0,
-    outputUnit: units[1],
+    outputUnit: units[1].value,
   };
 
   handleChange = name => (event) => {
@@ -54,9 +55,10 @@ class UnitConverter extends React.Component {
     } else if (name === 'input') {
       input = event.target.value;
     }
+    const output = guc(gas, inputUnit, outputUnit, +input);
     this.setState({
       [name]: event.target.value,
-      output: guc(gas, inputUnit, outputUnit, +input),
+      output: output === null ? 'Error' : output,
     });
   };
 
@@ -78,7 +80,7 @@ class UnitConverter extends React.Component {
     } = this.state;
     return (
       <main>
-        <p>単位変換</p>
+        <ServiceHeader {...this.props} />
         <div style={{ textAlign: 'center' }}>
           <FormControl className={classes.formControl} style={{ display: 'inline-block' }}>
             <TextField
@@ -89,12 +91,7 @@ class UnitConverter extends React.Component {
               className={classes.textField}
               value={gas}
               onChange={this.handleChange('gas')}
-              SelectProps={{
-                native: true,
-                MenuProps: {
-                  className: classes.menu,
-                },
-              }}
+              SelectProps={{ native: true }}
               margin="normal"
               variant="outlined"
             >
@@ -105,12 +102,13 @@ class UnitConverter extends React.Component {
               ))}
             </TextField>
             <TextField
+              autoFocus
               id="input"
               label="Input"
               value={input}
               onChange={this.handleChange('input')}
               type="number"
-              className={classes.textField}
+              className={classNames(classes.textField, classes.mini)}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -124,18 +122,13 @@ class UnitConverter extends React.Component {
               className={classes.textField}
               value={inputUnit}
               onChange={this.handleChange('inputUnit')}
-              SelectProps={{
-                native: true,
-                MenuProps: {
-                  className: classes.menu,
-                },
-              }}
+              SelectProps={{ native: true }}
               margin="normal"
               variant="outlined"
             >
               {units.map(option => (
-                <option key={option} value={option}>
-                  {option}
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </TextField>
@@ -152,8 +145,7 @@ class UnitConverter extends React.Component {
               label="output"
               value={output}
               onChange={this.handleChange('output')}
-              type="number"
-              className={classes.textField}
+              className={classNames(classes.textField, classes.mini)}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -167,27 +159,24 @@ class UnitConverter extends React.Component {
               className={classes.textField}
               value={outputUnit}
               onChange={this.handleChange('outputUnit')}
-              SelectProps={{
-                native: true,
-                MenuProps: {
-                  className: classes.menu,
-                },
-              }}
+              SelectProps={{ native: true }}
               margin="normal"
               variant="outlined"
             >
               {units.map(option => (
-                <option key={option} value={option}>
-                  {option}
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </TextField>
           </FormControl>
-          <Link to="/">
-            <Typography>
+          <div style={{ marginTop: '2rem' }}>
+            <Link to="/">
+              <Typography>
               Topに戻る
-            </Typography>
-          </Link>
+              </Typography>
+            </Link>
+          </div>
         </div>
       </main>
     );
