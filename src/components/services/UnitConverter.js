@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import ServiceHeader from './ServiceHeader';
 
 const units = [{ value: 'kg', label: 'kg' }, { value: 'L', label: 'L' }, { value: 'Nm3', label: 'Nm3(0℃)' }, { value: 'Sm3', label: 'Sm3(35℃)' }];
-const gases = ['O2', 'N2', 'Ar', 'H2', 'CO2', 'He', 'C2H2'];
+const gases = [{ value: 'O2', label: '酸素(O2)' }, { value: 'N2', label: '窒素(N2)' }, { value: 'Ar', label: 'アルゴン(Ar)' }, { value: 'H2', label: '水素(H2)' }, { value: 'CO2', label: '二酸化炭素(CO2)' }, { value: 'He', label: 'ヘリウム(He)' }, { value: 'C2H2', label: 'アセチレン(C2H2)' }];
 
 const styles = theme => ({
   formControl: {
@@ -35,7 +35,7 @@ class UnitConverter extends React.Component {
   }
 
   state = {
-    gas: gases[0],
+    gas: gases[0].value,
     input: '',
     inputUnit: units[0].value,
     output: 0,
@@ -96,8 +96,8 @@ class UnitConverter extends React.Component {
               variant="outlined"
             >
               {gases.map(option => (
-                <option key={option} value={option}>
-                  {option}
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </TextField>

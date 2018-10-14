@@ -40,8 +40,7 @@ class ErrorBoundary extends Component {
   }
 }
 ErrorBoundary.propTypes = {
-  classes: PropTypes.object.isRequired, // eslint-disable-line
-  children: PropTypes.object.isRequired, // eslint-disable-line
+  children: PropTypes.array.isRequired, // eslint-disable-line
 };
 
 export default ErrorBoundary;
