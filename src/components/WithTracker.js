@@ -3,13 +3,13 @@ import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 import GA from '../configs/ga';
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'development') {
   ReactGA.initialize(GA);
 }
 
 const withTracker = (WrappedComponent, options = {}) => {
   const trackPage = (page) => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'development') {
       ReactGA.set({ page, ...options });
       ReactGA.pageview(page);
     }
