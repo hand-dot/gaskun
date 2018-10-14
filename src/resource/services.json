@@ -6,35 +6,26 @@
     {
         "icon": "💧",
         "id": "production-calc",
-        "title": "製造量計算"
+        "title": "製造能力の算定"
     },
     {
         "icon": "🚰",
         "id": "storage-calc",
-        "title": "貯蔵量計算"
+        "title": "貯蔵能力の算定"
+    },
+    {
+        "icon": "🚛",
+        "id": "maxflowrate-calc",
+        "title": "流量計算(配管)"
+    },
+    {
+        "icon": "🎭",
+        "id": "reducingvalve-calc",
+        "title": "流量計算(減圧弁)"
     },
     {
         "icon": "💬",
         "id": "qa",
         "title": "Q&A"
-    },
-    {
-        "icon": "🚛",
-        "id": "maxflowrate-calc",
-        "title": "各配管ガスの最大流量計算"
-    },
-    {
-        "icon": "👿",
-        "id": "pressureloss-calc",
-        "title": "各配管の圧力損失計算"
-    }, {
-        "icon": "🎭",
-        "id": "reducingvalve-calc",
-        "title": "減圧弁の流量換算"
-    },
-    {
-        "icon": "💫",
-        "id": "purgegas-estimation",
-        "title": "パージガス量の簡易推算法"
     }
 ]
