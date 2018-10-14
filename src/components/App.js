@@ -9,8 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Home from './Home';
-import UnitConverter from './UnitConverter';
-import Development from './Development';
+import UnitConverter from './services/UnitConverter';
+import Development from './services/Development';
 import Footer from './Footer';
 
 const styles = theme => ({
