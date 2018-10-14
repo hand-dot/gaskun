@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import SENTRY from '../configs/sentry';
 
-
-Sentry.init({
-  dsn: SENTRY,
-});
+if (process.env.NODE_ENV !== 'development') {
+  Sentry.init({ dsn: SENTRY });
+}
 
 class ErrorBoundary extends Component {
   constructor(props) {

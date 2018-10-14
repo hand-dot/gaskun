@@ -8,7 +8,7 @@ function Development(props) {
     <main>
       <ServiceHeader {...props} />
       <div style={{ margin: '2rem 0', textAlign: 'center' }}>
-        <Typography variant="headline">
+        <Typography variant="h6">
         ただいま開発中...
           <span role="img" aria-label="under construction">👷</span>
         </Typography>

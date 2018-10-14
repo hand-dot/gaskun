@@ -18,13 +18,14 @@ const styles = theme => ({
   formControl: {
     margin: theme.spacing.unit,
     minWidth: 120,
+    display: 'inline-block',
   },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
   },
   mini: {
-    maxWidth: 150,
+    width: '45%',
   },
 });
 
@@ -66,9 +67,9 @@ class UnitConverter extends React.Component {
     this.setState(({
       input, inputUnit, output, outputUnit,
     }) => ({
-      input: output,
+      input: output === 'Error' ? '' : output, // アセチレンのエラー処理
       inputUnit: outputUnit,
-      output: input,
+      output: output === 'Error' ? 'Error' : input, // アセチレンのエラー処理
       outputUnit: inputUnit,
     }));
   }
@@ -81,102 +82,50 @@ class UnitConverter extends React.Component {
     return (
       <main>
         <ServiceHeader {...this.props} />
+        <FormControl className={classes.formControl}>
+          <TextField
+
+            label="Gas"
+            select
+            className={classes.textField}
+            value={gas}
+            onChange={this.handleChange('gas')}
+            SelectProps={{ native: true }}
+            margin="normal"
+            variant="outlined"
+          >
+            {gases.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </TextField>
+        </FormControl>
+        <Form
+          value={input.toString()}
+          unit={inputUnit}
+          type="input"
+          handleChange={this.handleChange.bind(this)}
+          {...this.props}
+        />
         <div style={{ textAlign: 'center' }}>
-          <FormControl className={classes.formControl} style={{ display: 'inline-block' }}>
-            <TextField
-              fullWidth
-              id="gas"
-              label="Gas"
-              select
-              className={classes.textField}
-              value={gas}
-              onChange={this.handleChange('gas')}
-              SelectProps={{ native: true }}
-              margin="normal"
-              variant="outlined"
-            >
-              {gases.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
-            <TextField
-              autoFocus
-              id="input"
-              label="Input"
-              value={input}
-              onChange={this.handleChange('input')}
-              type="number"
-              className={classNames(classes.textField, classes.mini)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              margin="normal"
-              variant="outlined"
-            />
-            <TextField
-              id="inputUnit"
-              label="Unit"
-              select
-              className={classes.textField}
-              value={inputUnit}
-              onChange={this.handleChange('inputUnit')}
-              SelectProps={{ native: true }}
-              margin="normal"
-              variant="outlined"
-            >
-              {units.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
-          </FormControl>
-          <div>
-            <IconButton className={classes.button} aria-label="reverse" onClick={this.reverse.bind(this)}>
-              <Autorenew />
-            </IconButton>
-          </div>
-          <FormControl className={classes.formControl} style={{ display: 'inline-block' }}>
-            <TextField
-              disabled
-              id="output"
-              label="output"
-              value={output}
-              onChange={this.handleChange('output')}
-              className={classNames(classes.textField, classes.mini)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              margin="normal"
-              variant="outlined"
-            />
-            <TextField
-              id="outputUnit"
-              label="Unit"
-              select
-              className={classes.textField}
-              value={outputUnit}
-              onChange={this.handleChange('outputUnit')}
-              SelectProps={{ native: true }}
-              margin="normal"
-              variant="outlined"
-            >
-              {units.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
-          </FormControl>
-          <div style={{ marginTop: '2rem' }}>
-            <Link to="/">
-              <Typography>
+          <IconButton className={classes.button} aria-label="reverse" onClick={this.reverse.bind(this)}>
+            <Autorenew />
+          </IconButton>
+        </div>
+        <Form
+          value={output.toString()}
+          unit={outputUnit}
+          type="output"
+          handleChange={this.handleChange.bind(this)}
+          {...this.props}
+        />
+        <div style={{ marginTop: '3rem', textAlign: 'center' }}>
+          <Link to="/">
+            <Typography>
               Topに戻る
-              </Typography>
-            </Link>
-          </div>
+            </Typography>
+          </Link>
         </div>
       </main>
     );
@@ -184,6 +133,55 @@ class UnitConverter extends React.Component {
 }
 
 UnitConverter.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line
+};
+
+function Form(props) {
+  const {
+    classes, value, unit, type, handleChange,
+  } = props;
+  return (
+    <FormControl fullWidth className={classes.formControl}>
+      <TextField
+        autoFocus={type === 'input'}
+        disabled={type === 'output'}
+        label={type}
+        value={value}
+        type={type === 'input' ? 'number' : 'text'}
+        onChange={e => handleChange(type)(e)}
+        className={classNames(classes.textField, classes.mini)}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        margin="normal"
+        variant="outlined"
+      />
+      <TextField
+        label="Unit"
+        select
+        className={classNames(classes.textField, classes.mini)}
+        value={unit}
+        onChange={e => handleChange(`${type}Unit`)(e)}
+        SelectProps={{ native: true }}
+        margin="normal"
+        variant="outlined"
+      >
+        {units.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </TextField>
+
+    </FormControl>
+  );
+}
+
+Form.propTypes = {
+  value: PropTypes.string.isRequired,
+  unit: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired, // eslint-disable-line
 };
 
